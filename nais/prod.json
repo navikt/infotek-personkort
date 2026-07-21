@@ -1,0 +1,6 @@
+{
+  "cluster": "prod-gcp",
+  "backendIngress": "https://infotek-personkort-backend.intern.nav.no",
+  "frontendIngress": "https://infotek-personkort.intern.nav.no"
+}
+

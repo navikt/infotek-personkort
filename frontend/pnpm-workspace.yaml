@@ -1,0 +1,5 @@
+allowBuilds:
+  esbuild: true
+minimumReleaseAge: 10080 # minutter = 7 dager
+minimumReleaseAgeExclude:
+  - '@navikt/infotek-frontend-config'

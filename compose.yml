@@ -1,0 +1,16 @@
+services:
+  infotek-personkort-backend:
+    build:
+      context: ./backend
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: noauth
+
+  infotek-personkort-frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "3000:8080"
+    depends_on:
+      - infotek-personkort-backend

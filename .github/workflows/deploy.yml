@@ -1,0 +1,64 @@
+name: Build and deploy
+
+on:
+  push:
+    branches: ["main"]
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      image_backend: ${{ steps.backend-image.outputs.image }}
+      image_frontend: ${{ steps.frontend-image.outputs.image }}
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - name: Build backend artifact
+        run: mvn --batch-mode -pl backend -am clean package
+      - uses: nais/docker-build-push@31c3a7321909bcb20799fdf46153fec721fd9512 # v0
+        id: backend-image
+        with:
+          team: infotek
+          docker_context: ./backend
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+      - uses: nais/docker-build-push@31c3a7321909bcb20799fdf46153fec721fd9512 # v0
+        id: frontend-image
+        with:
+          team: infotek
+          docker_context: ./frontend
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+
+  deploy-dev:
+    runs-on: ubuntu-latest
+    needs: build
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: nais/deploy/actions/deploy@bf80eb8dba46797adb4909901e629bca8595a027 # v2
+        env:
+          CLUSTER: dev-gcp
+          RESOURCE: nais/app/backend.yaml,nais/app/frontend.yaml
+          VAR: image_backend=${{ needs.build.outputs.image_backend }},image_frontend=${{ needs.build.outputs.image_frontend }}
+
+  deploy-prod:
+    runs-on: ubuntu-latest
+    needs: deploy-dev
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: nais/deploy/actions/deploy@bf80eb8dba46797adb4909901e629bca8595a027 # v2
+        env:
+          CLUSTER: prod-gcp
+          RESOURCE: nais/app/backend.yaml,nais/app/frontend.yaml
+          VAR: image_backend=${{ needs.build.outputs.image_backend }},image_frontend=${{ needs.build.outputs.image_frontend }}
+
