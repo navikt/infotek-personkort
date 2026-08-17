@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="no">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Logg inn</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container">
+    <div class="row mt-5 justify-content-md-center">
+      <div class="col-md-6">
+        <h4>Saksbehandler</h4>
+        <div class="card mb-2">
+          <div class="card-body">
+            <h5 class="card-title">Demo Saksbehandler</h5>
+            <p class="card-text">Brukes til lokal utvikling og tester.</p>
+            <form method="post">
+              <input type="hidden" name="username" value="demo_saksbehandler">
+              <input type="hidden" name="claims" value='{"NAVident":"DEMO","name":"Demo Saksbehandler","preferred_username":"Demo","groups":["saksbehandler"],"roles":["personkort_leser"]}'>
+              <button type="submit" class="btn btn-primary">Sign in</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

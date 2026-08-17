@@ -3,7 +3,7 @@
 ## Scope na
 - Frontend shell med TanStack Router + TanStack Query
 - Backend shell med demo-data for personkort
-- To Nais-apper: frontend og backend
+- Én Nais-app: backend serverer frontend-bygget og eksponerer API-et
 
 ## Ikke i scope na
 - Oracle sub-DB

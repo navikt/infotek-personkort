@@ -1,6 +1,4 @@
 {
   "cluster": "dev-gcp",
-  "backendIngress": "https://infotek-personkort-backend.intern.dev.nav.no",
-  "frontendIngress": "https://infotek-personkort.intern.dev.nav.no"
+  "ingress": "https://infotek-personkort.intern.dev.nav.no"
 }
-

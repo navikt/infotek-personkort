@@ -9,23 +9,24 @@ export default defineConfig({
   plugins: [
     tanstackRouter({
       target: "react",
-      autoCodeSplitting: true
+      autoCodeSplitting: true,
     }),
-    react()
+    react(),
   ],
   resolve: {
     alias: {
-      "~": path.resolve(__dirname, "src")
-    }
+      "~": path.resolve(__dirname, "src"),
+    },
   },
   test: {
     globals: true,
-    environment: "node"
+    environment: "node",
   },
   server: {
     proxy: {
-      "/api": "http://localhost:8080",
-      "/oauth2": "http://localhost:4000"
-    }
-  }
+      // Går via Wonderwall slik at dev-serveren får samme auth som i Nais.
+      "/api": "http://localhost:4000",
+      "/oauth2": "http://localhost:4000",
+    },
+  },
 });

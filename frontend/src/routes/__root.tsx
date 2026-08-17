@@ -4,7 +4,7 @@ import { useState } from "react";
 import { erGyldigFnrVerdi } from "~/utils/fnr";
 
 export const Route = createRootRoute({
-  component: RootComponent
+  component: RootComponent,
 });
 
 function RootComponent() {
@@ -17,15 +17,18 @@ function RootComponent() {
       <Page.Block as="header">
         <InternalHeader>
           <InternalHeader.Title as="h1">Infotek personkort</InternalHeader.Title>
-          <Box as="form" onSubmit={(event) => {
-            event.preventDefault();
-            if (!erGyldigFnrVerdi(fnr)) {
-              setError("Skriv et gyldig fodselsnummer (11 siffer)");
-              return;
-            }
-            setError(undefined);
-            navigate({ to: "/personkort/$fnr", params: { fnr } });
-          }}>
+          <Box
+            as="form"
+            onSubmit={(event) => {
+              event.preventDefault();
+              if (!erGyldigFnrVerdi(fnr)) {
+                setError("Skriv et gyldig fodselsnummer (11 siffer)");
+                return;
+              }
+              setError(undefined);
+              navigate({ to: "/personkort/$fnr", params: { fnr } });
+            }}
+          >
             <Search
               label="Sok person"
               variant="simple"
