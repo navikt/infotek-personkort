@@ -11,7 +11,7 @@ describe("hentPersonkort", () => {
           kontonummerMaskert: "****56",
           sisteVedtakDato: "2026-06-30",
           status: "AKTIV",
-          tekst: "Demooppforing"
+          tekst: "Demooppforing",
         }),
         { status: 200, headers: { "content-type": "application/json" } }
       )
@@ -26,4 +26,3 @@ describe("hentPersonkort", () => {
     await expect(hentPersonkort("12345678910")).rejects.toThrow("Kunne ikke hente personkort");
   });
 });
-

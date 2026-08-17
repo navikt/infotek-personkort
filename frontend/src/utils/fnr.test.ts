@@ -11,4 +11,3 @@ describe("erGyldigFnrVerdi", () => {
     expect(erGyldigFnrVerdi("1234567891a")).toBe(false);
   });
 });
-

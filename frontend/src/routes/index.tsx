@@ -2,7 +2,7 @@ import { BodyLong, Heading, VStack } from "@navikt/ds-react";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/")({
-  component: IndexPage
+  component: IndexPage,
 });
 
 function IndexPage() {
@@ -15,4 +15,3 @@ function IndexPage() {
     </VStack>
   );
 }
-

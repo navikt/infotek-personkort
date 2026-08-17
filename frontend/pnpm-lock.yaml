@@ -31,8 +31,8 @@ importers:
         specifier: ^2.5.2
         version: 2.5.3
       '@navikt/infotek-frontend-config':
-        specifier: 1.1.1
-        version: 1.1.1(@biomejs/biome@2.5.3)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+        specifier: ^1.2.0
+        version: 1.2.0(@biomejs/biome@2.5.3)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@tanstack/router-plugin':
         specifier: 1.167.8
         version: 1.167.8(@tanstack/react-router@1.170.18(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(vite@8.0.5(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.1)(@types/node@24.5.2)(esbuild@0.28.1)(jiti@2.7.0)(tsx@4.23.1))
@@ -475,20 +475,13 @@ packages:
   '@navikt/ds-tokens@8.15.0':
     resolution: {integrity: sha512-i76uLUIONOWc/G7kzPHQwNCR65bKBVulYbua6tyVmtlAhJyEPjC2vNyeeOq1bE4QcccPNQz9rBKydmXOVvJYtw==}
 
-  '@navikt/infotek-frontend-config@1.1.1':
-    resolution: {integrity: sha512-fyppUX9BXdniEpmU/0U8Kct2RHqkIIbGdGUnMOkBPi8gSPLyadPlaZYC1jFVhKsO4LYE6YVRyJgTF8lkYepG0w==, tarball: https://npm.pkg.github.com/download/@navikt/infotek-frontend-config/1.1.1/5b9f1fa5e37dfc0fc78f234973c7964a15ab030a}
+  '@navikt/infotek-frontend-config@1.2.0':
+    resolution: {integrity: sha512-A9CPMxF0N4vPXxG7WE1qc9f6JkD3gEek3p9zsCciR4oEMIC9yJIrY7Ls7ZU5yH2RdJUz3gp8UVYeyi4HcWzlcA==, tarball: https://npm.pkg.github.com/download/@navikt/infotek-frontend-config/1.2.0/85bfb396fd2cafc74d9bfa2a2342b1e5f13c583d}
     engines: {node: '>=24'}
     peerDependencies:
       '@biomejs/biome': '>=2'
       react: '>=19'
       react-dom: '>=19'
-    peerDependenciesMeta:
-      '@biomejs/biome':
-        optional: true
-      react:
-        optional: true
-      react-dom:
-        optional: true
 
   '@oxc-project/types@0.122.0':
     resolution: {integrity: sha512-oLAl5kBpV4w69UtFZ9xqcmTi+GENWOcPF7FCrczTiBbmC0ibXxCwyvZGbO39rCVEuLGAZM84DH0pUIyyv/YJzA==}
@@ -1777,8 +1770,8 @@ snapshots:
 
   '@navikt/ds-tokens@8.15.0': {}
 
-  '@navikt/infotek-frontend-config@1.1.1(@biomejs/biome@2.5.3)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)':
-    optionalDependencies:
+  '@navikt/infotek-frontend-config@1.2.0(@biomejs/biome@2.5.3)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)':
+    dependencies:
       '@biomejs/biome': 2.5.3
       react: 19.2.7
       react-dom: 19.2.7(react@19.2.7)

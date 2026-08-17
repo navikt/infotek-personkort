@@ -14,4 +14,3 @@ export async function hentPersonkort(fnr: string): Promise<Personkort> {
   }
   return response.json() as Promise<Personkort>;
 }
-

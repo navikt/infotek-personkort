@@ -1,4 +1,4 @@
-.PHONY: help install build test backend frontend frontend-test e2e-install e2e-test docker-build docker-up docker-down docker-logs
+.PHONY: help install build test backend frontend frontend-test e2e-install e2e-test docker-build docker-up docker-down docker-logs run
 
 help: ## Vis kommandoer
 	@grep -E '^[a-zA-Z_-]+:.*##' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*## "}; {printf "%-18s %s\n", $$1, $$2}'
@@ -6,9 +6,9 @@ help: ## Vis kommandoer
 install: ## Installer frontend-avhengigheter
 	cd frontend && pnpm install --no-frozen-lockfile
 
-build: backend frontend ## Bygg backend og frontend
+build: backend ## Bygg frontend og backend (frontend-bygget pakkes inn i backend-jaren)
 
-backend: ## Bygg backend
+backend: frontend ## Bygg backend med innebygd frontend
 	mvn --batch-mode -s .mvn/settings.xml -pl backend -am clean package
 
 frontend: install ## Bygg frontend
@@ -23,7 +23,7 @@ e2e-install: ## Installer e2e-avhengigheter
 e2e-test: install e2e-install ## Kjor frontend e2e med Playwright (starter backend + frontend)
 	cd e2e && pnpm playwright:test
 
-test: frontend-test ## Kjor backend + frontend unit tester
+test: frontend frontend-test ## Kjor backend + frontend unit tester
 	mvn --batch-mode -s .mvn/settings.xml -pl backend -am test
 
 docker-build: build ## Bygg app + Docker-images lokalt
@@ -37,3 +37,6 @@ docker-down: ## Stopp appene lokalt i Docker
 
 docker-logs: ## Vis Docker-logger
 	docker compose -f compose.yml logs -f
+
+run: build ## Bygg og start appene lokalt
+	docker compose -f compose.yml up --build

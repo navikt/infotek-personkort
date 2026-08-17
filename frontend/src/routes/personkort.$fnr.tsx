@@ -4,14 +4,14 @@ import { createFileRoute } from "@tanstack/react-router";
 import { hentPersonkort } from "~/api/personkortApi";
 
 export const Route = createFileRoute("/personkort/$fnr")({
-  component: PersonkortPage
+  component: PersonkortPage,
 });
 
 function PersonkortPage() {
   const { fnr } = Route.useParams();
   const { data, isLoading, isError } = useQuery({
     queryKey: ["personkort", fnr],
-    queryFn: () => hentPersonkort(fnr)
+    queryFn: () => hentPersonkort(fnr),
   });
 
   if (isLoading) {
@@ -44,4 +44,3 @@ function PersonkortPage() {
     </VStack>
   );
 }
-
