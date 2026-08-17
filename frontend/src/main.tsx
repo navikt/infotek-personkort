@@ -2,6 +2,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createRouter, RouterProvider } from "@tanstack/react-router";
 import ReactDOM from "react-dom/client";
 import "@navikt/ds-css";
+import "./index.css";
 import { routeTree } from "./routeTree.gen";
 
 export interface RouterContext {

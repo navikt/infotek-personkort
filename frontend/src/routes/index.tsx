@@ -11,7 +11,7 @@ function IndexPage() {
       <Heading size="large" level="2">
         Personkort-oppslag
       </Heading>
-      <BodyLong>Bruk sokefeltet i toppen for a hente demo-data for en person.</BodyLong>
+      <BodyLong>Bruk søkefeltet i toppen for å hente demo-data for en person.</BodyLong>
     </VStack>
   );
 }

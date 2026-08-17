@@ -1,7 +1,7 @@
 .PHONY: help install build test backend frontend frontend-test e2e-install e2e-test docker-build docker-up docker-down docker-logs run
 
 help: ## Vis kommandoer
-	@grep -E '^[a-zA-Z_-]+:.*##' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*## "}; {printf "%-18s %s\n", $$1, $$2}'
+	@grep -E '^[a-zA-Z0-9_-]+:.*##' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*## "}; {printf "%-18s %s\n", $$1, $$2}'
 
 install: ## Installer frontend-avhengigheter
 	cd frontend && pnpm install --no-frozen-lockfile
@@ -18,10 +18,10 @@ frontend-test: install ## Kjor frontend unit tester (Vitest)
 	cd frontend && pnpm test
 
 e2e-install: ## Installer e2e-avhengigheter
-	cd e2e && pnpm install --no-frozen-lockfile
+	cd tests && pnpm install --no-frozen-lockfile
 
 e2e-test: install e2e-install ## Kjor frontend e2e med Playwright (starter backend + frontend)
-	cd e2e && pnpm playwright:test
+	cd tests && pnpm playwright:test
 
 test: frontend frontend-test ## Kjor backend + frontend unit tester
 	mvn --batch-mode -s .mvn/settings.xml -pl backend -am test

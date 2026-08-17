@@ -1,6 +1,6 @@
 # infotek-personkort
 
-Oppslagslosning for IP_90 personkort i Infotek.
+Oppslagsløsning for IP_90 personkort i Infotek.
 
 ## Stack
 - Backend: Kotlin + Spring Boot 4 + Maven
@@ -10,4 +10,3 @@ Oppslagslosning for IP_90 personkort i Infotek.
 ## MVP
 - Demo-data i backend
 - Ingen DB/Kafka i fase 1
-

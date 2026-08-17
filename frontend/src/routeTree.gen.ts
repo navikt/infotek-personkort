@@ -9,48 +9,55 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as PersonkortRouteImport } from './routes/personkort'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as PersonkortFnrRouteImport } from './routes/personkort.$fnr'
 
+const PersonkortRoute = PersonkortRouteImport.update({
+  id: '/personkort',
+  path: '/personkort',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PersonkortFnrRoute = PersonkortFnrRouteImport.update({
-  id: '/personkort/$fnr',
-  path: '/personkort/$fnr',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/personkort/$fnr': typeof PersonkortFnrRoute
+  '/personkort': typeof PersonkortRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/personkort/$fnr': typeof PersonkortFnrRoute
+  '/personkort': typeof PersonkortRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/personkort/$fnr': typeof PersonkortFnrRoute
+  '/personkort': typeof PersonkortRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/personkort/$fnr'
+  fullPaths: '/' | '/personkort'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/personkort/$fnr'
-  id: '__root__' | '/' | '/personkort/$fnr'
+  to: '/' | '/personkort'
+  id: '__root__' | '/' | '/personkort'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  PersonkortFnrRoute: typeof PersonkortFnrRoute
+  PersonkortRoute: typeof PersonkortRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/personkort': {
+      id: '/personkort'
+      path: '/personkort'
+      fullPath: '/personkort'
+      preLoaderRoute: typeof PersonkortRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -58,19 +65,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/personkort/$fnr': {
-      id: '/personkort/$fnr'
-      path: '/personkort/$fnr'
-      fullPath: '/personkort/$fnr'
-      preLoaderRoute: typeof PersonkortFnrRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  PersonkortFnrRoute: PersonkortFnrRoute,
+  PersonkortRoute: PersonkortRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

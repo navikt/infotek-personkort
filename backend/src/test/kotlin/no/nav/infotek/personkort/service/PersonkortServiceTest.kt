@@ -12,7 +12,8 @@ class PersonkortServiceTest {
 
         assertEquals("******8910", personkort.fnrMaskert)
         assertEquals("Kari Nordmann", personkort.navn)
-        assertEquals("AKTIV", personkort.status)
+        assertEquals(2, personkort.innslag.size)
+        assertEquals("AKTIV", personkort.innslag.first().status)
     }
 
     @Test
@@ -21,6 +22,7 @@ class PersonkortServiceTest {
 
         assertEquals("******1111", personkort.fnrMaskert)
         assertEquals("Ukjent bruker", personkort.navn)
-        assertEquals("UKJENT", personkort.status)
+        assertEquals(1, personkort.innslag.size)
+        assertEquals("UKJENT", personkort.innslag.first().status)
     }
 }

@@ -3,13 +3,16 @@ package no.nav.infotek.personkort
 import no.nav.security.mock.oauth2.MockOAuth2Server
 import no.nav.security.mock.oauth2.token.DefaultOAuth2TokenCallback
 import no.nav.security.token.support.spring.test.EnableMockOAuth2Server
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc
+import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.assertj.MockMvcTester
-import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc
-import org.assertj.core.api.Assertions.assertThat
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @SpringBootTest(
     properties = [
@@ -27,33 +30,50 @@ class ApplikasjonIntegrasjonTest(
 
     @Test
     fun `api krever token`() {
-        assertThat(tester.get().uri("/api/personkort/12345678910"))
-            .hasStatus(401)
+        mockMvc
+            .perform(
+                post("/api/personkort")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content("""{"fnr":"12345678910"}""")
+            ).andExpect(status().isUnauthorized)
     }
 
     @Test
     fun `api svarer med token som har riktig audience`() {
-        assertThat(
-            tester
-                .get()
-                .uri("/api/personkort/12345678910")
-                .header("Authorization", "Bearer ${token()}")
-        ).hasStatus(200)
+        mockMvc
+            .perform(
+                post("/api/personkort")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content("""{"fnr":"12345678910"}""")
+                    .header("Authorization", "Bearer ${token()}")
+            ).andExpect(status().isOk)
     }
 
     @Test
     fun `api avviser token med feil audience`() {
-        assertThat(
-            tester
-                .get()
-                .uri("/api/personkort/12345678910")
-                .header("Authorization", "Bearer ${token(audience = "en-annen-app")}")
-        ).hasStatus(401)
+        mockMvc
+            .perform(
+                post("/api/personkort")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content("""{"fnr":"12345678910"}""")
+                    .header("Authorization", "Bearer ${token("en-annen-app")}")
+            ).andExpect(status().isUnauthorized)
+    }
+
+    @Test
+    fun `api avviser ugyldig fnr med 400`() {
+        mockMvc
+            .perform(
+                post("/api/personkort")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content("""{"fnr":"123"}""")
+                    .header("Authorization", "Bearer ${token()}")
+            ).andExpect(status().isBadRequest)
     }
 
     @Test
     fun `klientside-rute faller tilbake til index-html`() {
-        assertThat(tester.get().uri("/personkort/12345678910"))
+        assertThat(tester.get().uri("/personkort"))
             .hasStatus(200)
             .bodyText()
             .contains("<div id=\"root\">")
@@ -66,7 +86,7 @@ class ApplikasjonIntegrasjonTest(
     }
 
     @Test
-    fun `nais-probene er apne og skygges ikke av spa-fallback`() {
+    fun `nais-probene er åpne og skygges ikke av spa-fallback`() {
         assertThat(tester.get().uri("/actuator/health/liveness")).hasStatus(200)
         assertThat(tester.get().uri("/actuator/health/readiness")).hasStatus(200)
     }

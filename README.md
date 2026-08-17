@@ -55,10 +55,61 @@ make e2e-test
 Vite dev-serveren proxyer `/api` og `/oauth2` til Wonderwall på port 4000, slik at
 også hot reload kjører med ekte innlogging.
 
+### Lokal utvikling med `pnpm dev` (anbefalt)
+
+Kjør i to terminaler:
+
+```bash
+# terminal 1: Wonderwall + mock-oidc + backend
+docker compose -f compose.yml up --build
+
+# terminal 2: frontend med hot reload
+cd frontend
+pnpm install
+pnpm dev
+```
+
+- Åpne frontend på `http://localhost:3000`.
+- `3000` serverer frontend fra Vite, men proxyer `/oauth2` og `/api` til Wonderwall på `4000`.
+- Går du direkte til `http://localhost:4000`, får du backendens statiske frontend-bygg.
+
+### E2E i `tests/`
+
+Repoet bruker en egen `tests/`-mappe for Playwright (samme mønster som i andre repos):
+
+```bash
+cd tests
+pnpm install --no-frozen-lockfile
+pnpm playwright:install
+pnpm playwright:test
+```
+
+### Lokal backend-utvikling
+
+Når du jobber primært i backend, kan du kjøre backend lokalt uten Docker-image:
+
+```bash
+# terminal 1: start mock-oidc
+docker compose -f compose.yml up mock-oidc
+
+# terminal 2: start backend lokalt
+export AZURE_APP_WELL_KNOWN_URL=http://localhost:8102/azure-mock/.well-known/openid-configuration
+export AZURE_APP_CLIENT_ID=infotek-personkort
+mvn --batch-mode -s .mvn/settings.xml -pl backend spring-boot:run
+```
+
+- Backend kjører da på `http://localhost:8080`.
+- Health/prober: `http://localhost:8080/actuator/health/liveness` og `/readiness`.
+- API-endepunktene er beskyttet; bruk testene for rask verifisering av auth/adferd:
+
+```bash
+mvn --batch-mode -s .mvn/settings.xml -pl backend -Dtest=ApplikasjonIntegrasjonTest,PersonkortServiceTest test
+```
+
 ## Maven parent
 
 Prosjektet arver fra `no.nav.infotek:infotek-parent`.
-For lokal bygging ma GitHub Packages-auth for Maven vaere satt opp i `~/.m2/settings.xml`.
+For lokal bygging må GitHub Packages-auth for Maven være satt opp i `~/.m2/settings.xml`.
 
 ## Framdrift
 

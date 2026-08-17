@@ -8,10 +8,20 @@ describe("hentPersonkort", () => {
         JSON.stringify({
           fnrMaskert: "******8910",
           navn: "Kari Nordmann",
-          kontonummerMaskert: "****56",
-          sisteVedtakDato: "2026-06-30",
-          status: "AKTIV",
-          tekst: "Demooppforing",
+          innslag: [
+            {
+              status: "AKTIV",
+              kontonummerMaskert: "****56",
+              dato: "2026-06-30",
+              fom: "2026-01-01",
+              tom: "2026-06-30",
+              bevilgetBelop: "12345.67",
+              betaltBelop: "11800.00",
+              bevilgetProsent: "100.00",
+              tekst: "Demooppføring",
+              datoSekvens: 1,
+            },
+          ],
         }),
         { status: 200, headers: { "content-type": "application/json" } }
       )
@@ -19,6 +29,12 @@ describe("hentPersonkort", () => {
 
     const data = await hentPersonkort("12345678910");
     expect(data.navn).toBe("Kari Nordmann");
+    expect(data.innslag).toHaveLength(1);
+    expect(globalThis.fetch).toHaveBeenCalledWith("/api/personkort", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ fnr: "12345678910" }),
+    });
   });
 
   it("kaster feil ved ikke-ok respons", async () => {
