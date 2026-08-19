@@ -1,7 +1,7 @@
 package no.nav.infotek.personkort.model
 
 data class PersonkortResponse(
-    val fnrMaskert: String,
+    val fnr: String,
     val navn: String,
     val innslag: List<PersonkortInnslag>,
 )

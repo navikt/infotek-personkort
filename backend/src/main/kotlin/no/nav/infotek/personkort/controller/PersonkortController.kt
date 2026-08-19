@@ -23,6 +23,7 @@ class PersonkortController(
         }
 
         return personkortService.hentPersonkort(request.fnr)
+            ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Fant ikke bruker")
     }
 }
 

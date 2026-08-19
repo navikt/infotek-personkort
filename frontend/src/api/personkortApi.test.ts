@@ -6,7 +6,7 @@ describe("hentPersonkort", () => {
     vi.spyOn(globalThis, "fetch").mockResolvedValueOnce(
       new Response(
         JSON.stringify({
-          fnrMaskert: "******8910",
+          fnr: "12345678910",
           navn: "Kari Nordmann",
           innslag: [
             {
@@ -40,5 +40,10 @@ describe("hentPersonkort", () => {
   it("kaster feil ved ikke-ok respons", async () => {
     vi.spyOn(globalThis, "fetch").mockResolvedValueOnce(new Response(null, { status: 500 }));
     await expect(hentPersonkort("12345678910")).rejects.toThrow("Kunne ikke hente personkort");
+  });
+
+  it("kaster bruker-ikke-funnet ved 404", async () => {
+    vi.spyOn(globalThis, "fetch").mockResolvedValueOnce(new Response(null, { status: 404 }));
+    await expect(hentPersonkort("12345678910")).rejects.toThrow("Fant ikke bruker");
   });
 });

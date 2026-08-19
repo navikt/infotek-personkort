@@ -1,6 +1,5 @@
 .blur-sensitive-info .personnavn,
-.blur-sensitive-info .personident,
-.blur-sensitive-info .personinfo {
+.blur-sensitive-info .personident {
   filter: blur(5px);
   transition: filter 0.2s ease-in-out;
 }

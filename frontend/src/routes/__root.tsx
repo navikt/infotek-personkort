@@ -1,4 +1,4 @@
-import { Box, InternalHeader, Page, Search } from "@navikt/ds-react";
+import { Alert, Box, InternalHeader, Page, Search } from "@navikt/ds-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { createRootRoute, Outlet, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
@@ -63,8 +63,8 @@ function RootComponent() {
                 setError(undefined);
                 setFnr("");
                 navigate({ to: "/personkort" });
-              } catch {
-                setError("Kunne ikke hente personkort");
+              } catch (e) {
+                setError(e instanceof Error ? e.message : "Kunne ikke hente personkort");
               }
             }}
           >
@@ -72,15 +72,16 @@ function RootComponent() {
               label="Søk person"
               variant="simple"
               placeholder="Fødselsnummer"
+              autoComplete="off"
               value={fnr}
               onChange={setFnr}
-              error={error}
               size="small"
             />
           </Box>
         </InternalHeader>
       </Page.Block>
       <Page.Block as="main" width="2xl" gutters>
+        {error && <Alert variant="error">{error}</Alert>}
         <Outlet />
       </Page.Block>
     </Page>

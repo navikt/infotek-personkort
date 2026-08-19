@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service
 class PersonkortService {
     private val demoData = mapOf(
         "12345678910" to PersonkortResponse(
-            fnrMaskert = "******8910",
+            fnr = "12345678910",
             navn = "Kari Nordmann",
             innslag = listOf(
                 PersonkortInnslag(
@@ -38,7 +38,7 @@ class PersonkortService {
             ),
         ),
         "10987654321" to PersonkortResponse(
-            fnrMaskert = "******4321",
+            fnr = "10987654321",
             navn = "Ola Nordmann",
             innslag = listOf(
                 PersonkortInnslag(
@@ -57,23 +57,5 @@ class PersonkortService {
         ),
     )
 
-    fun hentPersonkort(fnr: String): PersonkortResponse =
-        demoData[fnr] ?: PersonkortResponse(
-            fnrMaskert = "******${fnr.takeLast(4)}",
-            navn = "Ukjent bruker",
-            innslag = listOf(
-                PersonkortInnslag(
-                    status = "UKJENT",
-                    kontonummerMaskert = null,
-                    dato = null,
-                    fom = null,
-                    tom = null,
-                    bevilgetBelop = null,
-                    betaltBelop = null,
-                    bevilgetProsent = null,
-                    tekst = "Ingen demo-data funnet for oppgitt ident",
-                    datoSekvens = null,
-                ),
-            ),
-        )
+    fun hentPersonkort(fnr: String): PersonkortResponse? = demoData[fnr]
 }

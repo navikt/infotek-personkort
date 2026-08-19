@@ -12,7 +12,7 @@ export type PersonkortInnslag = {
 };
 
 export type Personkort = {
-  fnrMaskert: string;
+  fnr: string;
   navn: string;
   innslag: PersonkortInnslag[];
 };
@@ -24,6 +24,9 @@ export async function hentPersonkort(fnr: string): Promise<Personkort> {
     body: JSON.stringify({ fnr }),
   });
   if (!response.ok) {
+    if (response.status === 404) {
+      throw new Error("Fant ikke bruker");
+    }
     throw new Error("Kunne ikke hente personkort");
   }
   return response.json() as Promise<Personkort>;
