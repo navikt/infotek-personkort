@@ -89,16 +89,12 @@ pnpm playwright:test
 Når du jobber primært i backend, kan du kjøre backend lokalt uten Docker-image:
 
 ```bash
-# terminal 1: start mock-oidc
-docker compose -f compose.yml up mock-oidc
-
-# terminal 2: start backend lokalt
-export AZURE_APP_WELL_KNOWN_URL=http://localhost:8102/azure-mock/.well-known/openid-configuration
-export AZURE_APP_CLIENT_ID=infotek-personkort
-mvn --batch-mode -s .mvn/settings.xml -pl backend spring-boot:run
+# Bygger, starter Postgres, mock-oidc, Wonderwall og appen, og seeder demo-data.
+make dev
 ```
 
-- Backend kjører da på `http://localhost:8080`.
+- Appen er tilgjengelig gjennom Wonderwall på `http://localhost:4000`.
+- Testdata kan seedes på nytt uten å starte resten av miljøet med `make test-data`.
 - Health/prober: `http://localhost:8080/actuator/health/liveness` og `/readiness`.
 - API-endepunktene er beskyttet; bruk testene for rask verifisering av auth/adferd:
 
@@ -114,3 +110,23 @@ For lokal bygging må GitHub Packages-auth for Maven være satt opp i `~/.m2/set
 ## Framdrift
 
 Se `docs/framdrift.md` for status, milepæler og hva som er utenfor scope i MVP.
+
+## Demo-data / testpersoner
+
+Personkort-oppslag bruker data fra PostgreSQL. Det syntetiske datasettet ligger i
+`backend/src/test/resources/personkort-demodata.json` og seedes idempotent med
+`make test-data`; det pakkes ikke inn i produksjonsapplikasjonen.
+Bruk disse fødselsnumrene for å søke opp testpersoner lokalt:
+
+| Fnr | Navn | Antall innslag | Merknad |
+|-----|------|-----------------|---------|
+| `12345678910` | Kari Nordmann | 20 | Standard demo-person; første 3 rader er stabile (aktiv, aktiv, avsluttet) |
+| `10987654321` | Ola Nordmann | 20 | Første rad er stabil (inaktiv/avsluttet ytelse) |
+| `12030456789` | Test Person | 20 | Første 2 rader er stabile: løpende periode uten TOM med lang tekst, og en rad med kun tomme felt |
+| `10000000000`–`10000000016` | Syntetiske testpersoner (17 stk.) | 20–30 hver | Genererte navn med variasjon i status, kontonummer, beløp, tomme felt og tekstlengde |
+| `10000000100` | Gudrun Fjellheim | 320 | «Veteran»-person med lang livshistorie (ca. kvartalsvise innslag over ~80 år) |
+| `10000000101` | Alf Kristiansen | 420 | «Veteran»-person med lang livshistorie |
+| `10000000102` | Ruth Amundsen | 540 | «Veteran»-person med lang livshistorie |
+
+Alle fødselsnumre er fiktive og finnes kun i demo-datasettet. Fnr som ikke finnes i
+datasettet (f.eks. `11111111111`) gir 404 fra `/api/personkort`.

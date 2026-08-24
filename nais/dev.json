@@ -1,4 +1,7 @@
 {
   "cluster": "dev-gcp",
-  "ingress": "https://infotek-personkort.intern.dev.nav.no"
+  "ingress": "https://infotek-personkort.intern.dev.nav.no",
+  "database": {
+    "tier": "db-f1-micro"
+  }
 }

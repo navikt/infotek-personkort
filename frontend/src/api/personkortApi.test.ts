@@ -11,7 +11,7 @@ describe("hentPersonkort", () => {
           innslag: [
             {
               status: "AKTIV",
-              kontonummerMaskert: "****56",
+              kontonummer: "51223001234",
               dato: "2026-06-30",
               fom: "2026-01-01",
               tom: "2026-06-30",

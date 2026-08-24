@@ -17,3 +17,15 @@ no.nav.security.jwt:
       discoveryurl: ${AZURE_APP_WELL_KNOWN_URL}
       accepted_audience: ${AZURE_APP_CLIENT_ID}
 
+spring:
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_DATABASE:personkort}
+    username: ${DB_USERNAME:personkort}
+    password: ${DB_PASSWORD:personkort}
+    hikari:
+      # Nais-krav: lite kjørende oppsett, unngå tomme forbindelser som lekker.
+      maximum-pool-size: 3
+      idle-timeout: 300000
+      max-lifetime: 1800000
+  flyway:
+    enabled: true

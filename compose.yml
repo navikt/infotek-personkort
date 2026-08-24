@@ -1,6 +1,20 @@
 # Lokal kjøring speiler Nais: Wonderwall foran én app som både serverer
 # frontend-bygget og eksponerer API-et. Auth er alltid på — det finnes ingen noauth-modus.
 services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: personkort
+      POSTGRES_USER: personkort
+      POSTGRES_PASSWORD: personkort
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U personkort -d personkort"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
   wonderwall:
     image: ghcr.io/nais/wonderwall:2026-08-03-104631-c84349f
     restart: on-failure
@@ -47,5 +61,13 @@ services:
     environment:
       AZURE_APP_WELL_KNOWN_URL: "http://host.docker.internal:8102/azure-mock/.well-known/openid-configuration"
       AZURE_APP_CLIENT_ID: "infotek-personkort"
+      DB_HOST: postgres
+      DB_PORT: "5432"
+      DB_DATABASE: personkort
+      DB_USERNAME: personkort
+      DB_PASSWORD: personkort
     depends_on:
-      - mock-oidc
+      mock-oidc:
+        condition: service_started
+      postgres:
+        condition: service_healthy

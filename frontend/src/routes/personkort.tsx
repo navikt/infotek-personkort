@@ -1,5 +1,5 @@
 import { Alert, BodyShort, CopyButton, Heading, HStack, Tooltip, VStack } from "@navikt/ds-react";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import type { Personkort } from "~/api/personkortApi";
 import { PersonkortDatagrid } from "~/components/personkort/PersonkortDatagrid";
@@ -9,8 +9,15 @@ export const Route = createFileRoute("/personkort")({
 });
 
 function PersonkortPage() {
-  const queryClient = useQueryClient();
-  const data = queryClient.getQueryData<Personkort>(["personkort-visning"]);
+  // Henter aldri selv - søket i headeren (__root.tsx) gjør et fetchQuery mot samme
+  // queryKey. useQuery (i motsetning til queryClient.getQueryData) abonnerer på
+  // cachen, slik at siden oppdateres når man søker på en ny person uten at ruten
+  // remountes (URL-en er uendret: "/personkort" -> "/personkort").
+  const { data } = useQuery<Personkort>({
+    queryKey: ["personkort-visning"],
+    queryFn: () => Promise.reject(new Error("Ingen aktivt søk")),
+    enabled: false,
+  });
 
   if (!data) {
     return <Alert variant="warning">Søk opp en person for å se personkort.</Alert>;

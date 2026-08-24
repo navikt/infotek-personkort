@@ -8,7 +8,7 @@ data class PersonkortResponse(
 
 data class PersonkortInnslag(
     val status: String,
-    val kontonummerMaskert: String?,
+    val kontonummer: String?,
     val dato: String?,
     val fom: String?,
     val tom: String?,

@@ -1,4 +1,7 @@
 {
   "cluster": "prod-gcp",
-  "ingress": "https://infotek-personkort.intern.nav.no"
+  "ingress": "https://infotek-personkort.intern.nav.no",
+  "database": {
+    "tier": "db-custom-1-3840"
+  }
 }

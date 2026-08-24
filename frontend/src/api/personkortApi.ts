@@ -1,6 +1,6 @@
 export type PersonkortInnslag = {
   status: string;
-  kontonummerMaskert: string | null;
+  kontonummer: string | null;
   dato: string | null;
   fom: string | null;
   tom: string | null;
