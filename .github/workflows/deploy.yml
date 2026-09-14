@@ -44,12 +44,12 @@ jobs:
           pnpm install --no-frozen-lockfile
           pnpm run build
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
       - name: Build backend artifact
         run: mvn --batch-mode -pl backend -am clean package
         env:
           MAVEN_USERNAME: x-access-token
-          MAVEN_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+          MAVEN_PASSWORD: ${{ secrets.READER_TOKEN }}
       - uses: nais/docker-build-push@31c3a7321909bcb20799fdf46153fec721fd9512 # v0
         id: image
         with:
